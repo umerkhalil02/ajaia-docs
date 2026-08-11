@@ -1,0 +1,7 @@
+node_modules/
+.next/
+data/app.db
+data/app.db-wal
+data/app.db-shm
+.env*.local
+npm-debug.log*
