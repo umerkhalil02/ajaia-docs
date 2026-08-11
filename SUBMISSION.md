@@ -23,8 +23,11 @@
 - 3–5 minute walkthrough covering: main user flow, what works end to end, what was deprioritized, key implementation decisions, and how AI supported the workflow
 - Link: **https://drive.google.com/file/d/1sKNmFsldxYDhJ-9ipipwC48bWQhpb1O9/view?usp=sharing**
 
+**Hosted Link**
+- Link: **https://ajaia-docs-production-79ea.up.railway.app/**
+
+
 **Not included**
-- Live/hosted deployment link — SQLite's file-based storage isn't compatible with serverless platforms with ephemeral filesystems (e.g. Vercel); reasoning is documented in `ARCHITECTURE.md` and `README.md`. The app runs locally via `npm install && npm run dev`, or can be deployed to any host with persistent disk (Render, Railway, Fly.io, a VM).
 - `.docx` file import — only `.txt` and `.md` are supported, stated in the UI and README
 - Real-time collaborative editing — autosave with last-write-wins instead; reasoning documented in `ARCHITECTURE.md`
 - Real authentication — seeded mock users instead, as explicitly permitted by the assignment brief
