@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
-import { db } from '../../../lib/db';
-import { createDocument } from '../../../lib/documents';
 import { getCurrentUserId } from '../../../lib/auth';
+import { getDb } from '../../../lib/db';
+import { createDocument } from '../../../lib/documents';
 import { isExtensionSupported, textToHtml } from '../../../lib/importFile';
 
 const MAX_BYTES = 2 * 1024 * 1024; // 2MB, generous for plain text/markdown
@@ -44,6 +44,7 @@ export async function POST(req) {
   const raw = await file.text();
   const html = textToHtml(raw, file.name);
   const title = file.name.replace(/\.(txt|md)$/i, '') || 'Imported document';
+  const db = getDb()
 
   try {
     const doc = createDocument(db, { title, content: html, ownerId: userId });

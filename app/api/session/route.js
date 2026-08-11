@@ -1,18 +1,20 @@
-import { NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
-import { db } from '../../../lib/db';
-import { getUser } from '../../../lib/documents';
+import { NextResponse } from 'next/server';
 import { COOKIE_NAME } from '../../../lib/auth';
+import { getDb } from '../../../lib/db';
+import { getUser } from '../../../lib/documents';
 
 export async function GET() {
   const store = cookies();
   const id = store.get(COOKIE_NAME)?.value || null;
+  const db = getDb()
   const user = id ? getUser(db, id) : null;
   return NextResponse.json({ user: user || null });
 }
 
 export async function POST(req) {
   const body = await req.json().catch(() => ({}));
+  const db = getDb()
   const { userId } = body;
   const user = userId ? getUser(db, userId) : null;
   if (!user) {

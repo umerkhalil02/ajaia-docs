@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
-import { db } from '../../../../../lib/db';
-import { shareDocument, revokeShare } from '../../../../../lib/documents';
 import { getCurrentUserId } from '../../../../../lib/auth';
+import { getDb } from '../../../../../lib/db';
+import { revokeShare, shareDocument } from '../../../../../lib/documents';
 
 export async function POST(req, { params }) {
   const userId = getCurrentUserId();
@@ -15,6 +15,7 @@ export async function POST(req, { params }) {
       { status: 400 }
     );
   }
+  const db = getDb()
   try {
     const shares = shareDocument(db, params.id, userId, {
       targetUserId: body.targetUserId,
@@ -39,6 +40,7 @@ export async function DELETE(req, { params }) {
   if (!targetUserId) {
     return NextResponse.json({ error: 'userId query param required' }, { status: 400 });
   }
+  const db = getDb()
   try {
     const shares = revokeShare(db, params.id, userId, targetUserId);
     return NextResponse.json({ shares });

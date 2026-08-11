@@ -1,18 +1,19 @@
 import { NextResponse } from 'next/server';
-import { db } from '../../../../lib/db';
-import {
-  getDocumentForUser,
-  updateDocument,
-  deleteDocument,
-  listSharesForDocument,
-} from '../../../../lib/documents';
 import { getCurrentUserId } from '../../../../lib/auth';
+import { getDb } from '../../../../lib/db';
+import {
+  deleteDocument,
+  getDocumentForUser,
+  listSharesForDocument,
+  updateDocument,
+} from '../../../../lib/documents';
 
 export async function GET(req, { params }) {
   const userId = getCurrentUserId();
   if (!userId) {
     return NextResponse.json({ error: 'Not signed in' }, { status: 401 });
   }
+  const db = getDb()
   const doc = getDocumentForUser(db, params.id, userId);
   if (!doc) {
     return NextResponse.json({ error: 'Not found' }, { status: 404 });
@@ -34,7 +35,7 @@ export async function PATCH(req, { params }) {
   if (body.content !== undefined && typeof body.content !== 'string') {
     return NextResponse.json({ error: 'content must be a string' }, { status: 400 });
   }
-
+  const db = getDb()
   try {
     const doc = updateDocument(db, params.id, userId, {
       title: body.title,
@@ -54,6 +55,7 @@ export async function DELETE(req, { params }) {
   if (!userId) {
     return NextResponse.json({ error: 'Not signed in' }, { status: 401 });
   }
+  const db = getDb()
   try {
     deleteDocument(db, params.id, userId);
     return NextResponse.json({ ok: true });
